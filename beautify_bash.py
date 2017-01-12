@@ -22,6 +22,7 @@
 
 import re
 import sys
+import getopt
 
 PVERSION = '1.0'
 
@@ -156,15 +157,29 @@ class BeautifyBash:
                 self.write_file(path, result)
         return error
 
+    def usage_ex(self,err_val):
+        sys.stderr.write('Usage: ' + sys.argv[0] + ' [-h|-t <n>] [<file-name>|-]...\n')
+        sys.exit(err_val);
+
     def main(self):
+        try:
+            opts,paths = getopt.getopt(sys.argv[1:], "ht:", "help")
+        except getopt.GetoptError as err:
+            print(err)
+            self.usage_ex(2)
+
+        for o, v in opts:
+            if o == '-t':
+                self.tab_size = int(v)
+            elif o in ('-h', '--help'):
+                self.usage_ex(0)
+
+        if(len(paths) < 1):
+            paths.append('-')
+
         error = False
-        sys.argv.pop(0)
-        if(len(sys.argv) < 1):
-            sys.stderr.write(
-                'usage: shell script filenames or \"-\" for stdin.\n')
-        else:
-            for path in sys.argv:
-                error |= self.beautify_file(path)
+        for path in paths:
+            error |= self.beautify_file(path)
         sys.exit((0, 1)[error])
 
 # if not called as a module
