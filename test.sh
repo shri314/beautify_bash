@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# simple if then else case
 TEST1_in()
 {
    cat <<"EOM"
@@ -26,4 +27,44 @@ fi
 EOM
 }
 
-diff <(TEST1_in | python ./beautify_bash.py -t3 -          ) <(TEST1_expected) && echo PASS
+# here docs
+TEST2_in()
+{
+   cat <<"EOM"
+                  cat <<"HEHE"
+                     if [
+                        then
+
+HEHE
+if [ $? -eq 0 ]
+   then
+   :
+                        fi
+EOM
+}
+
+TEST2_expected()
+{
+   cat <<"EOM"
+cat <<"HEHE"
+                     if [
+                        then
+
+HEHE
+if [ $? -eq 0 ]
+then
+   :
+fi
+EOM
+}
+
+N=2
+for (( i = 1 ; i <= $N ; ++i ))
+do
+   if diff <(TEST${i}_in | python ./beautify_bash.py -t3 - ) <(TEST${i}_expected)
+   then
+      echo "TEST - $i of $N - PASS"
+   else
+      echo "TEST - $i of $N - FAIL"
+   fi
+done
