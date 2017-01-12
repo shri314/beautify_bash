@@ -58,7 +58,34 @@ fi
 EOM
 }
 
-N=2
+# elif
+TEST3_in()
+{
+   cat <<"EOM"
+if [ $? -eq 0 ]
+then
+   :
+   elif [ $? -ne 0 ]
+      then
+         :
+fi
+EOM
+}
+
+TEST3_expected()
+{
+   cat <<"EOM"
+if [ $? -eq 0 ]
+then
+   :
+elif [ $? -ne 0 ]
+then
+   :
+fi
+EOM
+}
+
+N=3
 for (( i = 1 ; i <= $N ; ++i ))
 do
    if diff <(TEST${i}_in | python ./beautify_bash.py -t3 - ) <(TEST${i}_expected)
