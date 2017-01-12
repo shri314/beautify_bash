@@ -69,8 +69,7 @@ class BeautifyBash:
             test_record = re.sub(r'(\A|\s)(#.*)', '', test_record, 1)
             if(not in_here_doc):
                 if(re.search('<<-?', test_record)):
-                    here_string = re.sub(
-                        '.*<<-?\s*[\'|"]?([_|\w]+)[\'|"]?.*', '\\1', stripped_record, 1)
+                    here_string = re.sub('.*<<-?\s*[\'"]?([\w]+)[\'"]?.*', '\\1', stripped_record, 1)
                     in_here_doc = (len(here_string) > 0)
             if(in_here_doc):  # pass on with no changes
                 output.append(record)
