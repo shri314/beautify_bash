@@ -67,14 +67,11 @@ class BeautifyBash:
             test_record = re.sub(r'\\.', '', test_record)
             # remove '#' comments
             test_record = re.sub(r'(\A|\s)(#.*)', '', test_record, 1)
-            if(not in_here_doc):
-                if(re.search('<<-?', test_record)):
-                    here_string = re.sub('.*<<-?\s*[\'"]?([\w]+)[\'"]?.*', '\\1', stripped_record, 1)
-                    in_here_doc = (len(here_string) > 0)
+
             if(in_here_doc):  # pass on with no changes
                 output.append(record)
                 # now test for here-doc termination string
-                if(re.search(here_string, test_record) and not re.search('<<', test_record)):
+                if(record == here_string):
                     in_here_doc = False
             else:  # not in here doc
                 if(in_ext_quote):
@@ -134,6 +131,9 @@ class BeautifyBash:
                     defer_ext_quote = False
                 if(re.search(r'\bcase\b', test_record)):
                     case_stack.append(0)
+                if(re.search('<<-?', test_record)):
+                    here_string = re.sub('.*<<-?\s*[\'"]?([\w]+)[\'"]?.*', '\\1', stripped_record, 1)
+                    in_here_doc = (len(here_string) > 0)
             line += 1
         error = (tab != 0)
         if(error):
