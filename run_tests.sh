@@ -19,13 +19,16 @@ do
       e=0;
       for (( cc = 1 ; cc <= $CASES ; ++cc ))
       do
+         echo "-------------------------------------------------------------"
+         input$cc
+         echo "-------------------------------------------------------------"
          (
             e=0;
-            diff <(input$cc | python ./beautify_bash.py -t3 - ) <(expected$cc) || e=1
+            diff "$@" <(input$cc | python ./beautify_bash.py -t3 - ) <(expected$cc) || e=1
 
             status=PASS && [ $e -ne 0 ] && status=FAIL
             echo "   CASE $cc of $CASES - $status"
-            exit $le;
+            exit $e;
          ) || ((++e))
       done
 
