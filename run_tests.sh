@@ -8,13 +8,13 @@ do
    test_file=${ALL_TESTS[$i]}
    test_name="$(basename $test_file)"
 
-   echo "============================================================="
-   echo "TEST $test_name ($i of $TOTAL_TESTS):"
-
    e=0;
    (
       CASES=1
       source $test_file
+
+      echo "============================================================="
+      echo "TEST $test_name ($i of $TOTAL_TESTS): $(describe)"
 
       e=0;
       for (( cc = 1 ; cc <= $CASES ; ++cc ))
