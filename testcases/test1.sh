@@ -10,13 +10,13 @@ describe()
 input1()
 {
    cat <<"EOM"
-echo
-if [ $? -eq 0 ]
-   then
-         echo
-               else
-                  echo
-                        fi
+echo            
+if [ $? -eq 0 ]     
+   then     
+         echo   
+               else     
+                  echo     
+                        fi   
 EOM
 }
 
@@ -36,15 +36,15 @@ EOM
 input2()
 {
    cat <<"EOM"
-                              func() {
-echo
-if [ $? -eq 0 ]
-   then
-         echo
-               else
-                  echo
-                        fi
-                }
+                              func() {     
+echo     
+if [ $? -eq 0 ]     
+   then     
+         echo     
+               else     
+                  echo     
+                        fi     
+                }     
 EOM
 }
 
@@ -71,7 +71,7 @@ input3()
 echo
 if [ $? -eq 0 ]
    then
-         echo
+echo
                else
                   echo
                         fi
