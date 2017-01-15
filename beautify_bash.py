@@ -77,34 +77,26 @@ class BeautifyBash:
                 if(in_ext_quote):
                     if(re.search(ext_quote_string, test_record)):
                         # provide line after quotes
-                        test_record = re.sub(
-                            '.*%s(.*)' % ext_quote_string, '\\1', test_record, 1)
+                        test_record = re.sub('.*%s(.*)' % ext_quote_string, '\\1', test_record, 1)
                         in_ext_quote = False
                 else:  # not in ext quote
                     if(re.search(r'(\A|\s)(\'|")', test_record)):
                         # apply only after this line has been processed
                         defer_ext_quote = True
-                        ext_quote_string = re.sub(
-                            '.*([\'"]).*', '\\1', test_record, 1)
+                        ext_quote_string = re.sub('.*([\'"]).*', '\\1', test_record, 1)
                         # provide line before quote
-                        test_record = re.sub(
-                            '(.*)%s.*' % ext_quote_string, '\\1', test_record, 1)
+                        test_record = re.sub('(.*)%s.*' % ext_quote_string, '\\1', test_record, 1)
                 if(in_ext_quote):
                     # pass on unchanged
                     output.append(record)
                 else:  # not in ext quote
-                    inc = len(re.findall(
-                        '(\s|\A|;)(case|then|do)(;|\Z|\s)', test_record))
+                    inc = len(re.findall('(\s|\A|;)(case|then|do)(;|\Z|\s)', test_record))
                     inc += len(re.findall('(\{|\(|\[)', test_record))
-                    outc = len(re.findall(
-                        '(\s|\A|;)(esac|fi|done|elif)(;|\)|\||\Z|\s)', test_record))
+                    outc = len(re.findall('(\s|\A|;)(esac|fi|done|elif)(;|\)|\||\Z|\s)', test_record))
                     outc += len(re.findall('(\}|\)|\])', test_record))
                     if(re.search(r'\besac\b', test_record)):
                         if(len(case_stack) == 0):
-                            sys.stderr.write(
-                                'File %s: error: "esac" before "case" in line %d.\n' % (
-                                    path, line)
-                            )
+                            sys.stderr.write('File %s: error: "esac" before "case" in line %d.\n' % (path, line))
                         else:
                             outc += case_stack.pop()
                     # sepcial handling for bad syntax within case ... esac
@@ -117,14 +109,12 @@ class BeautifyBash:
                             outc += 1
                             case_stack[-1] -= 1
                     # an ad-hoc solution for the "else" keyword
-                    else_case = (
-                        0, -1)[re.search('^(else)', test_record) != None]
+                    else_case = (0, -1)[re.search('^(else)', test_record) != None]
                     net = inc - outc
                     tab += min(net, 0)
                     extab = tab + else_case
                     extab = max(0, extab)
-                    output.append(
-                        (self.tab_str * self.tab_size * extab) + stripped_record)
+                    output.append((self.tab_str * self.tab_size * extab) + stripped_record)
                     tab += max(net, 0)
                 if(defer_ext_quote):
                     in_ext_quote = True
@@ -137,8 +127,7 @@ class BeautifyBash:
             line += 1
         error = (tab != 0)
         if(error):
-            sys.stderr.write(
-                'File %s: error: indent/outdent mismatch: %d.\n' % (path, tab))
+            sys.stderr.write('File %s: error: indent/outdent mismatch: %d.\n' % (path, tab))
         return '\n'.join(output), error
 
     def beautify_file(self, path):
