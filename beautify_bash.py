@@ -43,6 +43,7 @@ class BeautifyBash:
 
     def beautify_string(self, data, path=''):
         tab = 0
+        wrap_tab = ""
         case_stack = []
         ext_quote_string = ''
         here_string = ''
@@ -119,7 +120,15 @@ class BeautifyBash:
             extab = max(0, extab)
             tab += max(net, 0)
 
-            output.append((self.tab_str * self.tab_size * extab) + stripped_record);
+            output.append((self.tab_str * self.tab_size * extab) + wrap_tab + stripped_record);
+
+            if(re.search(r'\\\s*$', test_record)
+                or re.search(r'[&][&]\s*$', test_record)
+                or re.search(r'[|]\s*$', test_record)
+                ):
+                wrap_tab = self.tab_str * self.tab_size
+            else:
+                wrap_tab = ""
 
             if(re.search(r'\bcase\b', test_record)):
                 case_stack.append(0)
