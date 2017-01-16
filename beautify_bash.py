@@ -120,7 +120,10 @@ class BeautifyBash:
             extab = max(0, extab)
             tab += max(net, 0)
 
-            output.append((self.tab_str * self.tab_size * extab) + wrap_tab + stripped_record);
+            if(re.search(r'^\s*$', stripped_record) and wrap_tab == ""):
+                output.append("");
+            else:
+                output.append((self.tab_str * self.tab_size * extab) + wrap_tab + stripped_record);
 
             if(re.search(r'\\\s*$', test_record)
                 or re.search(r'[&][&]\s*$', test_record)
