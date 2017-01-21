@@ -88,7 +88,7 @@ class BeautifyBash:
                 ext_quote_string = re.sub('[^\'"]*([\'"]).*', '\\1', test_record, 1)
                 # provide line before quote
                 test_record = re.sub('(.*)%s.*' % ext_quote_string, '\\1', test_record, 1)
-                stripped_record = record.lstrip();
+                stripped_record = record.lstrip()
 
             inc = len(re.findall('(\s|\A|;)(case|then|do)(;|\Z|\s)', test_record))
             inc += len(re.findall('(\{|\(|\[)', test_record))
@@ -112,7 +112,7 @@ class BeautifyBash:
                     case_stack[-1] -= 1
 
             # an ad-hoc solution for the "else" keyword
-            else_case = (0, -1)[re.search('^(else)', test_record) != None]
+            else_case = (0, -1)[re.search('^(else)', test_record) is not None]
 
             net = inc - outc
             tab += min(net, 0)
@@ -121,14 +121,14 @@ class BeautifyBash:
             tab += max(net, 0)
 
             if(re.search(r'^\s*$', stripped_record) and wrap_tab == ""):
-                output.append("");
+                output.append("")
             else:
-                output.append((self.tab_str * self.tab_size * extab) + wrap_tab + stripped_record);
+                output.append((self.tab_str * self.tab_size * extab) + wrap_tab + stripped_record)
 
             if(re.search(r'\\\s*$', test_record)
                 or re.search(r'[&][&]\s*$', test_record)
                 or re.search(r'[|]\s*$', test_record)
-                ):
+               ):
                 wrap_tab = self.tab_str * self.tab_size
             else:
                 wrap_tab = ""
@@ -159,13 +159,13 @@ class BeautifyBash:
                 self.write_file(path, result)
         return error
 
-    def usage_ex(self,err_val):
+    def usage_ex(self, err_val):
         sys.stderr.write('Usage: ' + sys.argv[0] + ' [-h|-t <n>] [<file-name>|-]...\n')
-        sys.exit(err_val);
+        sys.exit(err_val)
 
     def main(self):
         try:
-            opts,paths = getopt.getopt(sys.argv[1:], "ht:", "help")
+            opts, paths = getopt.getopt(sys.argv[1:], "ht:", "help")
         except getopt.GetoptError as err:
             print(err)
             self.usage_ex(2)
