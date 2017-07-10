@@ -8,4 +8,4 @@ addons:
       - libtest-differences-perl
 
 script:
-  - prove -f
+  - make test
