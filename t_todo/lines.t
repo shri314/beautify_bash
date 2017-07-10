@@ -9,7 +9,7 @@ BEGIN {
 delete $ENV{PATH};
 
 sub a {
-return scalar `/usr/bin/env python ./beautify_bash.py -t3 - <<"EOM"
+return scalar `/usr/bin/env python ./beautify_bash.py -t3 <<"EOM"
 $_[0]
 EOM`
 }
