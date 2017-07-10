@@ -16,7 +16,7 @@ $_[0]
 EOM`
 }
 
-eq_or_diff a(<<'EOM'), <<'EOM', 'Basic if then else';
+eq_or_diff a(<<'EOM'), <<'EOM', 'If then else';
 echo            
 if [ $? -eq 0 ]     
    then     
@@ -35,7 +35,7 @@ fi
 
 EOM
 
-eq_or_diff a(<<'EOM'), <<'EOM', 'Basic if then else, in func staircase';
+eq_or_diff a(<<'EOM'), <<'EOM', 'If then else, in func staircase';
                               func() {     
 echo     
 if [ $? -eq 0 ]     
@@ -58,7 +58,7 @@ func() {
 
 EOM
 
-eq_or_diff a(<<'EOM'), <<'EOM', 'Basic if then else, in func';
+eq_or_diff a(<<'EOM'), <<'EOM', 'If then else, in func';
             func()
                      {
 echo
@@ -83,7 +83,7 @@ func()
 
 EOM
 
-eq_or_diff a(<<'EOM'), <<'EOM', 'Basic if then else, in func, if/then oneline';
+eq_or_diff a(<<'EOM'), <<'EOM', 'If then else, in func, if/then oneline';
             func()
                      {
 echo

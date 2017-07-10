@@ -16,7 +16,7 @@ $_[0]
 EOM`
 }
 
-eq_or_diff a(<<'EOM'), <<'EOM', 'Trim lines with empty spaces';
+eq_or_diff a(<<'EOM'), <<'EOM', 'Lines with empty spaces';
             func() {
     echo
                           

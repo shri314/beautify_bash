@@ -16,7 +16,7 @@ $_[0]
 EOM`
 }
 
-eq_or_diff a(<<'EOM'), <<'EOM', 'line wrapping when ending with \\, &&, |, ||';
+eq_or_diff a(<<'EOM'), <<'EOM', 'lines ending with \\, &&, |, ||';
 func() {
                 echo alpha \
           beta \
