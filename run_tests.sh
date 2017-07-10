@@ -1,5 +1,7 @@
 #!/bin/bash
 
+prove -f
+
 ALL_TESTS=( $(echo ./testcases/*.sh) )
 TOTAL_TESTS=${#ALL_TESTS[@]};
 PASSED=0
