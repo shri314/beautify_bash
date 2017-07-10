@@ -3,4 +3,4 @@ language: python
 install: true
 
 script:
-  - ./run_tests.sh
+  - prove -f
