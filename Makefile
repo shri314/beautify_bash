@@ -5,5 +5,6 @@ install:
 
 test:
 	prove -f
+	prove -v -f t_todo || true
 
 .PHONY: all install test
