@@ -1,15 +1,20 @@
-#!/bin/bash
+use Test::More tests => 4;
 
-CASES=4
-
-describe()
-{
-   echo "here docs"
+BEGIN {
+    if (!eval q{ use Test::Differences; 1 }) {
+        *eq_or_diff = \&is_deeply;
+    }
 }
 
-input1()
-{
-   cat <<"EOM"
+delete $ENV{PATH};
+
+sub a {
+return scalar `/usr/bin/env python ./beautify_bash.py -t3 <<"EOM"
+$_[0]
+EOM`
+}
+
+eq_or_diff a(<<'EOM'), <<'EOM', 'Here doc';
                   cat <<"HEHE"
                      if [
                         then
@@ -24,11 +29,6 @@ if [ $? -eq 0 ]
    :
                         fi
 EOM
-}
-
-expected1()
-{
-   cat <<"EOM"
 cat <<"HEHE"
                      if [
                         then
@@ -42,12 +42,10 @@ if [ $? -eq 0 ]
 then
    :
 fi
-EOM
-}
 
-input2()
-{
-   cat <<"EOM"
+EOM
+
+eq_or_diff a(<<'EOM'), <<'EOM', 'Here doc';
                   cat <<HEHE
                      if [ $x
                         then
@@ -62,11 +60,6 @@ if [ $? -eq 0 ]
    :
                         fi
 EOM
-}
-
-expected2()
-{
-   cat <<"EOM"
 cat <<HEHE
                      if [ $x
                         then
@@ -80,12 +73,10 @@ if [ $? -eq 0 ]
 then
    :
 fi
-EOM
-}
 
-input3()
-{
-   cat <<"EOM"
+EOM
+
+eq_or_diff a(<<'EOM'), <<'EOM', 'Here doc';
                   func() {
                   cat <<"HEHE"
                      if [
@@ -102,11 +93,6 @@ if [ $? -eq 0 ]
                         fi
                      }
 EOM
-}
-
-expected3()
-{
-   cat <<"EOM"
 func() {
    cat <<"HEHE"
                      if [
@@ -122,12 +108,10 @@ HEHE
       :
    fi
 }
-EOM
-}
 
-input4()
-{
-   cat <<"EOM"
+EOM
+
+eq_or_diff a(<<'EOM'), <<'EOM', 'Here doc';
                   func() {
                   cat <<HEHE
                      if [ $x
@@ -144,11 +128,6 @@ if [ $? -eq 0 ]
                         fi
                      }
 EOM
-}
-
-expected4()
-{
-   cat <<"EOM"
 func() {
    cat <<HEHE
                      if [ $x
@@ -164,5 +143,5 @@ HEHE
       :
    fi
 }
+
 EOM
-}

@@ -1,15 +1,20 @@
-#!/bin/bash
+use Test::More tests => 2;
 
-CASES=2
-
-describe()
-{
-   echo "string literals"
+BEGIN {
+    if (!eval q{ use Test::Differences; 1 }) {
+        *eq_or_diff = \&is_deeply;
+    }
 }
 
-input1()
-{
-   cat <<"EOM"
+delete $ENV{PATH};
+
+sub a {
+return scalar `/usr/bin/env python ./beautify_bash.py -t3 <<"EOM"
+$_[0]
+EOM`
+}
+
+eq_or_diff a(<<'EOM'), <<'EOM', 'String literals';
 func() {
                 X1="This is a 'test' about quotes"   
           X2='This is a "test" about quotes'     
@@ -25,11 +30,6 @@ func() {
             echo
 }
 EOM
-}
-
-expected1()
-{
-   cat <<"EOM"
 func() {
    X1="This is a 'test' about quotes"
    X2='This is a "test" about quotes'
@@ -44,12 +44,10 @@ func() {
                quotes"
    echo
 }
-EOM
-}
 
-input2()
-{
-   cat <<"EOM"
+EOM
+
+eq_or_diff a(<<'EOM'), <<'EOM', 'String literals, fake here doc';
 func() {
              Y1="This          
                 this is <<HERE  
@@ -57,16 +55,11 @@ func() {
                echo
 }
 EOM
-}
-
-expected2()
-{
-   cat <<"EOM"
 func() {
    Y1="This          
                 this is <<HERE  
                quotes"
    echo
 }
+
 EOM
-}

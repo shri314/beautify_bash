@@ -2,5 +2,10 @@ language: python
 
 install: true
 
+addons:
+  apt:
+    packages:
+      - libtest-differences-perl
+
 script:
-  - ./run_tests.sh
+  - make test

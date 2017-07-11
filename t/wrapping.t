@@ -1,15 +1,20 @@
-#!/bin/bash
+use Test::More tests => 1;
 
-CASES=1
-
-describe()
-{
-   echo "line wrapping when ending with \\, &&, |, ||"
+BEGIN {
+    if (!eval q{ use Test::Differences; 1 }) {
+        *eq_or_diff = \&is_deeply;
+    }
 }
 
-input1()
-{
-   cat <<"EOM"
+delete $ENV{PATH};
+
+sub a {
+return scalar `/usr/bin/env python ./beautify_bash.py -t3 <<"EOM"
+$_[0]
+EOM`
+}
+
+eq_or_diff a(<<'EOM'), <<'EOM', 'lines ending with \\, &&, |, ||';
 func() {
                 echo alpha \
           beta \
@@ -36,11 +41,6 @@ func() {
                  echo
 }
 EOM
-}
-
-expected1()
-{
-   cat <<"EOM"
 func() {
    echo alpha \
       beta \
@@ -66,5 +66,5 @@ func() {
       grep p
    echo
 }
+
 EOM
-}
